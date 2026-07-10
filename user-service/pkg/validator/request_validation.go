@@ -7,7 +7,7 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-var validate *validate.value
+var validate *validator.Validate
 
 func init() {
 	validate = validator.New()
@@ -20,18 +20,18 @@ func ValidateRequest(request interface{}) error {
 		for _, err := range err.(validator.ValidationErrors) {
 			switch err.Tag() {
 			case "required":
-				errorMessages = append(errorMessages, fmt.SprintF("%s is required", err.Field()))
+				errorMessages = append(errorMessages, fmt.Sprintf("%s is required", err.Field()))
 			case "email":
-				errorMessages = append(errorMessages, fmt.SprintF("%s is email", err.Field()))
+				errorMessages = append(errorMessages, fmt.Sprintf("%s is email", err.Field()))
 			case "min":
-				errorMessages = append(errorMessages, fmt.SprintF("%s is min", err.Field()))
+				errorMessages = append(errorMessages, fmt.Sprintf("%s must be at least %s characters log", err.Field(), err.Param()))
 			case "max":
-				errorMessages = append(errorMessages, fmt.SprintF("%s is max", err.Field()))
+				errorMessages = append(errorMessages, fmt.Sprintf("%s is max", err.Field()))
 			}
-			return errors.New("Validasi gagal " + joinMessage)
 		}
-		return errorMessages
+		return errors.New("Validasi gagal: " + joinMessage(errorMessages))
 	}
+	return nil
 }
 
 func joinMessage(errorMessages []string) string {
