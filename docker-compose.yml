@@ -1,0 +1,145 @@
+version: '3.8'
+
+services:
+  user_db:
+    image: postgres:15-alpine
+    container_name: postgres-user
+    restart: unless-stopped
+    ports:
+      - "5430:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: local
+      POSTGRES_DB: warehouse_user_db
+    volumes:
+      - postgres_user_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+  product_db:
+    image: postgres:15-alpine
+    container_name: postgres-product
+    restart: unless-stopped
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: local
+      POSTGRES_DB: warehouse_product_db
+    volumes:
+      - postgres_product_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+  merchant_db:
+    image: postgres:15-alpine
+    container_name: postgres-merchant
+    restart: unless-stopped
+    ports:
+      - "5436:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: local
+      POSTGRES_DB: warehouse_merchant_db
+    volumes:
+      - postgres_merchant_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+  nofication_db:
+    image: postgres:15-alpine
+    container_name: postgres-nofication
+    restart: unless-stopped
+    ports:
+      - "5438:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: local
+      POSTGRES_DB: warehouse_nofication_db
+    volumes:
+      - postgres_nofication_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+  transaction_db:
+    image: postgres:15-alpine
+    container_name: postgres-transaction
+    restart: unless-stopped
+    ports:
+      - "5440:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: local
+      POSTGRES_DB: warehouse_transaction_db
+    volumes:
+      - postgres_transaction_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+  warehouse_db:
+    image: postgres:15-alpine
+    container_name: postgres-warehouse
+    restart: unless-stopped
+    ports:
+      - "5442:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: local
+      POSTGRES_DB: warehouse_warehouse_db
+    volumes:
+      - postgres_warehouse_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+  redis:
+    image: redis:7-alpine
+    container_name: warehouse-redis
+    restart: unless-stopped
+    ports:
+      - "6378:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: warehouse-rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    
+
+volumes:
+  postgres_user_data:
+  postgres_product_data:
+  postgres_merchant_data:
+  postgres_nofication_data:
+  postgres_transaction_data:
+  postgres_warehouse_data:
