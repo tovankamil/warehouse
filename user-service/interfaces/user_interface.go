@@ -8,7 +8,7 @@ import (
 )
 
 type UserRepositoryInterface interface {
-	Createuser(ctx context.Context, user model.User) (*model.User, error)
+	CreateUser(ctx context.Context, user model.User) (*model.User, error)
 	GetAllUser(cxt context.Context, page int, limit int, search, sortBy, sortOrder string) ([]model.User, int64, error)
 	GetUserById(ctx context.Context, id uuid.UUID) (*model.User, error)
 	GetUserByEmail(ctx context.Context, email string) (*model.User, error)
