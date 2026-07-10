@@ -1,11 +1,15 @@
 package model
 
-import "time"
+import (
+	"time"
+
+	"github.com/google/uuid"
+)
 
 type UserRole struct {
-	ID         uint      `json:"id" gorm:"primaryKey:autoincrement"`
-	UserID     uint      `json:"user_id" gorm:"ForeignKey:UserID;references:ID"`
-	RoleID     uint      `json:"role_id" gorm:"ForeignKey:RoleID;references:ID"`
+	ID         uuid.UUID `json:"id" gorm:"type:uuid;primaryKey"`
+	UserID     uuid.UUID `json:"user_id" gorm:"type:uuid;ForeignKey:UserID;references:ID"`
+	RoleID     uuid.UUID `json:"role_id" gorm:"type:uuid;ForeignKey:RoleID;references:ID"`
 	Created_at time.Time `json:"created_at"`
 	Updated_at time.Time `json:"updated_at"`
 }
