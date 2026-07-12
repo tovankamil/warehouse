@@ -9,7 +9,7 @@ import (
 
 type UserRepositoryInterface interface {
 	CreateUser(ctx context.Context, user model.User) (*model.User, error)
-	GetAllUser(cxt context.Context, page int, limit int, search, sortBy, sortOrder string) ([]model.User, int64, error)
+	GetAllUsers(cxt context.Context, page int, limit int, search, sortBy, sortOrder string) ([]model.User, int64, error)
 	GetUserById(ctx context.Context, id uuid.UUID) (*model.User, error)
 	GetUserByEmail(ctx context.Context, email string) (*model.User, error)
 	UpdateUser(ctx context.Context, user model.User) error
@@ -21,5 +21,5 @@ type UserRepositoryInterface interface {
 	EditAssignToRole(ctx context.Context, assignRoleId uuid.UUID, user_id uuid.UUID, role_id uuid.UUID) error
 	DeleteAssignToRole(ctx context.Context, assignRoleId uuid.UUID) error
 	GetAllUserToRoles(ctx context.Context, page, limit int, search, sortBy, sortOrder string) ([]model.UserRole, int64, error)
-	GetUserByRoleId(ctx context.Context, roleID uuid.UUID) ([]model.User, error)
+	GetUserByRoleId(ctx context.Context, roleID uuid.UUID) (*model.UserRole, error)
 }
